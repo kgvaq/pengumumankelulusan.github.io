@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kelulusan SMK Global Insani 2026/2027</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Poppins', 'sans-serif'],
+                    },
+                    colors: {
+                        // Tema warna: Lilac & Soft Pink pastel
+                        lilac: {
+                            DEFAULT: '#B39DDB', // Lilac Medium
+                            light: '#F3E8FF',   // Lilac Sangat Terang (Lavender)
+                            dark: '#4A3E56',    // Lilac Gelap (Untuk teks & header kontras)
+                        },
+                        pink: {
+                            DEFAULT: '#FFB7C5', // Soft Pink
+                            light: '#FFE5EC',   // Soft Pink Sangat Terang
+                            dark: '#D87093',    // Soft Pink Gelap
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Transisi Halaman SPA */
+        .page-transition {
+            transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
+        }
+        .page-hidden {
+            opacity: 0;
+            transform: translateY(15px);
+            pointer-events: none;
+            position: absolute;
+            width: 100%;
+        }
+        .page-active {
+            opacity: 1;
+            transform: translateY(0);
+            position: relative;
+        }
+
+        /* Gaya Khusus Cetak (Print CSS) */
+        @media print {
+            body {
+                background: white !important;
+                color: black !important;
+            }
+            /* Sembunyikan semua elemen kecuali area SKL yang dicetak */
+            #print-area-wrapper {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                z-index: 9999;
+                background: white;
+                padding: 0;
+            }
+            .no-print {
+                display: none !important;
+            }
+            .print-card {
+                border: 2px solid #000 !important;
+                box-shadow: none !important;
+                background: white !important;
+                color: black !important;
+                border-radius: 0 !important;
+            }
+            .print-text-dark {
+                color: black !important;
+            }
+            .print-border-black {
+                border-color: black !important;
+            }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col selection:bg-pink selection:text-lilac-dark">
+
+    <!-- HEADER / NAVIGATION (No Print) -->
+    <header class="bg-lilac-dark text-white border-b-4 border-pink no-print shadow-lg">
+        <div class="container mx-auto px-4 py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-3">
+                <!-- LOGO: Lambang Perisai Sekolah Modern -->
+                <div class="bg-gradient-to-br from-pink to-pink-dark p-2.5 rounded-xl shadow-md">
+                    <svg class="w-8 h-8 text-lilac-dark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <!-- Perisai luar -->
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                        <!-- Buku terbuka -->
+                        <path d="M12 17c-1.2-1-2.5-1.5-4-1.5S5.2 16 4 17V10c1.2-1 2.5-1.5 4-1.5s2.8.5 4 1.5" />
+                        <path d="M12 17c1.2-1 2.5-1.5 4-1.5s2.8.5 4 1.5V10c-1.2-1-2.5-1.5-4-1.5s-2.8.5-4 1.5" />
+                        <line x1="12" y1="8.5" x2="12" y2="17" />
+                        <!-- Bintang kecil di bagian atas -->
+                        <path d="M12 4.5l.5 1 1.1.1-.8.8.2 1.1-.9-.5-.9.5.2-1.1-.8-.8 1.1-.1.5-1z" fill="currentColor" stroke="none" />
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="font-bold text-lg tracking-wide leading-tight text-white">SMK GLOBAL INSANI</h1>
+                    <p class="text-xs text-pink font-semibold tracking-wider uppercase">Pintu Gerbang Masa Depan</p>
+                </div>
+            </div>
+            <nav class="flex gap-2">
+                <button onclick="navigateTo('home')" class="px-4 py-2 rounded-lg text-sm font-medium transition duration-200 hover:bg-lilac hover:text-white active-nav" id="nav-home">Beranda</button>
+                <button onclick="navigateTo('sambutan')" class="px-4 py-2 rounded-lg text-sm font-medium transition duration-200 hover:bg-lilac hover:text-white" id="nav-sambutan">Sambutan</button>
+                <button id="nav-cek-btn" onclick="navigateTo('cek')" class="px-4 py-2 rounded-lg text-sm font-medium transition duration-200 hover:bg-lilac hover:text-white" disabled>Cek Kelulusan</button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT WRAPPER -->
+    <main class="flex-grow container mx-auto px-4 py-8 relative max-w-5xl">
+
+        <!-- ================= HALAMAN 1: HOME ================= -->
+        <section id="page-home" class="page-transition page-active">
+            <!-- Hero Header Section -->
+            <div class="bg-gradient-to-br from-lilac-dark to-lilac text-white rounded-3xl p-8 md:p-12 shadow-2xl relative overflow-hidden mb-8 border border-lilac/30">
+                <!-- Decorative BG Shapes -->
+                <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-pink opacity-20 rounded-full blur-2xl"></div>
+                <div class="absolute -left-10 -top-10 w-40 h-40 bg-lilac-light opacity-10 rounded-full blur-2xl"></div>
+
+                <div class="relative z-10 flex flex-col items-center text-center">
+                    <!-- SVG Lambang Sekolah Besar -->
+                    <div class="mb-6 animate-pulse">
+                        <svg class="w-20 h-20 text-pink filter drop-shadow-[0_4px_6px_rgba(255,183,197,0.4)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                            <path d="M12 17c-1.2-1-2.5-1.5-4-1.5S5.2 16 4 17V10c1.2-1 2.5-1.5 4-1.5s2.8.5 4 1.5" />
+                            <path d="M12 17c1.2-1 2.5-1.5 4-1.5s2.8.5 4 1.5V10c-1.2-1-2.5-1.5-4-1.5s-2.8.5-4 1.5" />
+                            <line x1="12" y1="8.5" x2="12" y2="17" />
+                            <path d="M12 4l.8 1.6 1.8.2-1.3 1.2.3 1.8-1.6-.9-1.6.9.3-1.8-1.3-1.2 1.8-.2.8-1.6z" fill="currentColor" stroke="none" />
+                        </svg>
+                    </div>
+
+                    <span class="bg-pink/20 text-pink font-bold px-4 py-1.5 rounded-full text-xs tracking-widest uppercase mb-4 border border-pink/30">Pengumuman Kelulusan</span>
+                    <h2 class="text-3xl md:text-5xl font-extrabold tracking-tight mb-2 text-white">SMK GLOBAL INSANI</h2>
+                    <p class="text-lg md:text-xl text-lilac-light font-light max-w-2xl mb-6">Tahun Pelajaran 2026/2027</p>
+
+                    <!-- COUNTDOWN TIMER CONTAINER -->
+                    <div id="countdown-container" class="w-full max-w-xl bg-black/10 backdrop-blur-md rounded-2xl p-6 border border-white/10 mb-8">
+                        <p class="text-xs text-pink tracking-wider uppercase font-semibold mb-4">Mundur Menuju Pembukaan Pengumuman</p>
+                        <div class="grid grid-cols-4 gap-3 text-center">
+                            <div class="bg-lilac-dark/80 p-3 rounded-xl border border-pink/20">
+                                <span id="days" class="block text-2xl md:text-3xl font-bold text-white">00</span>
+                                <span class="text-[10px] uppercase tracking-wider text-lilac-light">Hari</span>
+                            </div>
+                            <div class="bg-lilac-dark/80 p-3 rounded-xl border border-pink/20">
+                                <span id="hours" class="block text-2xl md:text-3xl font-bold text-white">00</span>
+                                <span class="text-[10px] uppercase tracking-wider text-lilac-light">Jam</span>
+                            </div>
+                            <div class="bg-lilac-dark/80 p-3 rounded-xl border border-pink/20">
+                                <span id="minutes" class="block text-2xl md:text-3xl font-bold text-white">00</span>
+                                <span class="text-[10px] uppercase tracking-wider text-lilac-light">Menit</span>
+                            </div>
+                            <div class="bg-lilac-dark/80 p-3 rounded-xl border border-pink/20">
+                                <span id="seconds" class="block text-2xl md:text-3xl font-bold text-white">00</span>
+                                <span class="text-[10px] uppercase tracking-wider text-lilac-light">Detik</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CTA BUTTONS -->
+                    <div class="flex flex-col sm:flex-row gap-4 w-full justify-center px-4">
+                        <button id="btn-portal" onclick="navigateTo('sambutan')" class="px-8 py-4 rounded-xl font-bold text-sm tracking-wide transition-all duration-300 shadow-xl disabled:opacity-50 disabled:cursor-not-allowed w-full sm:w-auto" disabled>
+                            PENGUMUMAN BELUM DIBUKA
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Grid: Informasi Utama & Statistik -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <!-- Statistik Card 1 -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex items-center gap-4 hover:shadow-md transition">
+                    <div class="bg-lilac-light p-4 rounded-xl text-lilac-dark">
+                        <i class="fa-solid fa-calendar-check text-2xl"></i>
+                    </div>
+                    <div>
+                        <span class="block text-xs text-slate-400 font-medium">Tanggal Pengumuman</span>
+                        <span class="block text-base font-bold text-lilac-dark">23 Mei 2026, 10:00 WIB</span>
+                    </div>
+                </div>
+                <!-- Statistik Card 2 -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex items-center gap-4 hover:shadow-md transition">
+                    <div class="bg-pink-light p-4 rounded-xl text-pink-dark">
+                        <i class="fa-solid fa-graduation-cap text-2xl"></i>
+                    </div>
+                    <div>
+                        <span class="block text-xs text-slate-400 font-medium">Total Peserta Ujian</span>
+                        <span class="block text-xl font-extrabold text-lilac-dark">124 Siswa</span>
+                    </div>
+                </div>
+                <!-- Statistik Card 3 -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex items-center gap-4 hover:shadow-md transition">
+                    <div class="bg-emerald-50 p-4 rounded-xl text-emerald-700">
+                        <i class="fa-solid fa-medal text-2xl"></i>
+                    </div>
+                    <div>
+                        <span class="block text-xs text-slate-400 font-medium">Akreditasi Sekolah</span>
+                        <span class="block text-xl font-extrabold text-lilac-dark">A (Sangat Unggul)</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Grid: Tentang Sekolah & Program Keahlian -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+                <!-- Section Kiri: Tentang Sekolah -->
+                <div class="lg:col-span-1 bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-lg font-bold text-lilac-dark mb-4 flex items-center gap-2 border-b pb-2">
+                            <i class="fa-solid fa-school text-pink-dark"></i> Profil Sekolah
+                        </h3>
+                        <div class="space-y-4 text-sm text-slate-600">
+                            <div>
+                                <span class="block font-semibold text-slate-800">Alamat Utama</span>
+                                <p>Jl. Pendidikan No. 45, Kecamatan Global, Kota Insani</p>
+                            </div>
+                            <div>
+                                <span class="block font-semibold text-slate-800">Hubungi Kami</span>
+                                <p>Telp: (021) 8899-7766<br>Email: info@smkglobalinsani.sch.id</p>
+                            </div>
+                            <div>
+                                <span class="block font-semibold text-slate-800">Visi Utama</span>
+                                <p class="italic text-xs">"Mewujudkan lulusan yang religius, kompeten di bidang teknologi masa kini, berdaya saing global, dan siap kerja profesional."</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-6 pt-4 border-t text-center">
+                        <a href="#" class="text-xs text-lilac-dark font-bold hover:text-pink-dark transition">Kunjungi Website Resmi <i class="fa-solid fa-arrow-up-right-from-square ml-1"></i></a>
+                    </div>
+                </div>
+
+                <!-- Section Kanan: Program Keahlian (Grid) -->
+                <div class="lg:col-span-2 space-y-4">
+                    <h3 class="text-lg font-bold text-lilac-dark flex items-center gap-2">
+                        <i class="fa-solid fa-shapes text-pink-dark"></i> Program Keahlian Utama
+                    </h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <!-- AKL -->
+                        <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-100 hover:border-pink/50 transition duration-300">
+                            <div class="flex items-start gap-3">
+                                <span class="text-3xl">📊</span>
+                                <div>
+                                    <h4 class="font-bold text-lilac-dark">AKL</h4>
+                                    <p class="text-xs text-slate-500 font-medium mb-1">Akuntansi & Keuangan Lembaga</p>
+                                    <p class="text-xs text-slate-600">Mempelajari pengelolaan keuangan, perpajakan, audit, serta implementasi sistem akuntansi modern.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- MPLB -->
+                        <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-100 hover:border-pink/50 transition duration-300">
+                            <div class="flex items-start gap-3">
+                                <span class="text-3xl">🗂️</span>
+                                <div>
+                                    <h4 class="font-bold text-lilac-dark">MPLB</h4>
+                                    <p class="text-xs text-slate-500 font-medium mb-1">Manajemen Perkantoran & Layanan Bisnis</p>
+                                    <p class="text-xs text-slate-600">Mengembangkan kecakapan tata kelola administrasi perkantoran digital, humas, dan manajemen berkas modern.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- RPL -->
+                        <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-100 hover:border-pink/50 transition duration-300">
+                            <div class="flex items-start gap-3">
+                                <span class="text-3xl">💻</span>
+                                <div>
+                                    <h4 class="font-bold text-lilac-dark">RPL</h4>
+                                    <p class="text-xs text-slate-500 font-medium mb-1">Rekayasa Perangkat Lunak</p>
+                                    <p class="text-xs text-slate-600">Fokus pada pembuatan aplikasi web, mobile, manajemen basis data, serta pemrograman tingkat lanjut.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- DKV -->
+                        <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-100 hover:border-pink/50 transition duration-300">
+                            <div class="flex items-start gap-3">
+                                <span class="text-3xl">🎨</span>
+                                <div>
+                                    <h4 class="font-bold text-lilac-dark">DKV</h4>
+                                    <p class="text-xs text-slate-500 font-medium mb-1">Desain Komunikasi Visual</p>
+                                    <p class="text-xs text-slate-600">Mempelajari seni komunikasi visual, videografi, fotografi digital, ilustrasi komersial, dan branding.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section Informasi Penting Kelulusan -->
+            <div class="bg-pink-light border border-pink/30 rounded-2xl p-6 flex flex-col sm:flex-row gap-4 items-start">
+                <div class="bg-pink text-pink-dark p-3 rounded-xl">
+                    <i class="fa-solid fa-circle-info text-2xl"></i>
+                </div>
+                <div>
+                    <h4 class="font-bold text-pink-dark mb-1">Informasi Kriteria Kelulusan</h4>
+                    <p class="text-sm text-slate-700 leading-relaxed">
+                        Kelulusan siswa SMK Global Insani tahun pelajaran 2026/2027 ditetapkan secara resmi berdasarkan sidang pleno dewan guru, dengan merujuk pada pemenuhan seluruh nilai akademik, penyelesaian laporan Praktik Kerja Lapangan (PKL), serta tingkat kehadiran serta akhlak mulia selama masa pembelajaran.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ================= HALAMAN 2: SAMBUTAN KEPALA SEKOLAH ================= -->
+        <section id="page-sambutan" class="page-transition page-hidden">
+            <div class="bg-white rounded-3xl p-8 md:p-12 shadow-xl border border-slate-100">
+                <div class="max-w-3xl mx-auto">
+                    <div class="text-center mb-8">
+                        <span class="text-pink-dark font-bold text-xs tracking-widest uppercase block mb-2">Sambutan Hangat</span>
+                        <h2 class="text-2xl md:text-3xl font-bold text-lilac-dark">Pidato Kelulusan Kepala Sekolah</h2>
+                        <div class="w-16 h-1 bg-pink mx-auto mt-3 rounded-full"></div>
+                    </div>
+
+                    <div class="prose prose-slate max-w-none text-slate-600 leading-relaxed space-y-4 mb-10 text-justify">
+                        <p class="font-semibold text-slate-800">Assalamu’alaikum Warahmatullahi Wabarakatuh,</p>
+                        <p>
+                            Puji syukur senantiasa kita panjatkan ke hadirat Allah SWT, Tuhan Yang Maha Esa, atas limpahan berkah dan karunia-Nya sehingga kita dapat mencapai momentum bersejarah ini. Hari ini adalah garis akhir yang manis sekaligus garis awal yang baru bagi perjalanan panjang seluruh putra-putri didik kami kelas XII SMK Global Insani.
+                        </p>
+                        <p>
+                            Tiga tahun lamanya kalian telah berjuang, belajar, mengasah keterampilan, serta menumbuhkan karakter di tengah ekosistem pendidikan yang dinamis ini. Kami selaku pihak manajemen sekolah dan dewan guru merasa bangga melihat perubahan serta prestasi luar biasa yang telah kalian ukir di bidang akademik maupun kejuruan masing-masing.
+                        </p>
+                        <p>
+                            Kelulusan ini bukanlah akhir perjuangan, melainkan kunci pembuka gerbang yang sesungguhnya di dunia kerja, wirausaha, maupun perguruan tinggi. Jagalah selalu nama baik almamater SMK Global Insani di mana pun kalian berpijak. Jadilah pribadi yang inovatif, berintegritas, dan bermanfaat bagi masyarakat luas.
+                        </p>
+                        <p>
+                            Kami ucapkan terima kasih yang tak terhingga kepada seluruh wali murid yang telah mempercayakan pendidikan putra-putrinya kepada kami. Selamat atas kelulusan kalian! Selamat berjuang di jenjang berikutnya!
+                        </p>
+                        <p class="font-semibold text-slate-800">Wassalamu’alaikum Warahmatullahi Wabarakatuh.</p>
+                    </div>
+
+                    <!-- Tanda Tangan & Keterangan Kepala Sekolah -->
+                    <div class="flex flex-col items-center sm:items-end justify-center sm:justify-end text-center sm:text-right mt-8 pr-4">
+                        <div class="w-48 text-center">
+                            <p class="text-sm text-slate-500 mb-2">Jakarta, 23 Mei 2026</p>
+                            <p class="text-xs text-slate-400">Kepapa Sekolah SMK Global Insani,</p>
+                            
+                            <!-- Placeholder Tanda Tangan SVG Elegan -->
+                            <div class="my-4 flex justify-center items-center h-20">
+                                <svg class="w-32 h-16 text-slate-700" viewBox="0 0 100 50" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M10,35 C30,10 40,45 50,20 C60,5 70,30 90,25" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M25,25 L75,25" stroke-dasharray="2 2" stroke-opacity="0.5"/>
+                                </svg>
+                            </div>
+                            
+                            <h5 class="font-bold text-slate-800 text-sm">Yusuf Mulana, S.Pd., M.Kom</h5>
+                            <p class="text-xs text-slate-500">NIP. 19900214 201803 2 001</p>
+                        </div>
+                    </div>
+
+                    <!-- Tombol Navigasi Halaman -->
+                    <div class="mt-12 pt-6 border-t flex flex-col sm:flex-row justify-between gap-4">
+                        <button onclick="navigateTo('home')" class="px-6 py-3 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50 font-medium text-sm transition flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-arrow-left"></i> Kembali ke Beranda
+                        </button>
+                        <button id="btn-lanjut-cek" onclick="navigateTo('cek')" class="px-6 py-3 rounded-xl bg-lilac hover:bg-lilac-dark text-white font-medium text-sm transition flex items-center justify-center gap-2 shadow-md shadow-lilac/20 disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                            Lanjut Cek Kelulusan <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ================= HALAMAN 3: FORM CEK KELULUSAN ================= -->
+        <section id="page-cek" class="page-transition page-hidden">
+            <div class="bg-white rounded-3xl p-8 md:p-12 shadow-xl border border-slate-100 max-w-2xl mx-auto">
+                <div class="text-center mb-8">
+                    <span class="text-pink-dark font-bold text-xs tracking-widest uppercase block mb-2">Sistem Verifikasi</span>
+                    <h2 class="text-2xl md:text-3xl font-bold text-lilac-dark">Pencarian Data Kelulusan</h2>
+                    <p class="text-sm text-slate-500 mt-2">Silakan masukkan NISN resmi Anda untuk melihat hasil evaluasi kelulusan.</p>
+                </div>
+
+                <!-- Input Form Section (no-print) -->
+                <div class="space-y-6 no-print">
+                    <div>
+                        <label for="nisn-input" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Nomor Induk Siswa Nasional (NISN)</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400">
+                                <i class="fa-solid fa-address-card text-lg"></i>
+                            </div>
+                            <input type="text" id="nisn-input" placeholder="Contoh: 1234567890" class="w-full pl-12 pr-4 py-4 bg-slate-50 border-2 border-slate-200 rounded-2xl focus:border-lilac focus:bg-white focus:outline-none font-semibold text-lg tracking-wider transition duration-200" maxlength="10">
+                        </div>
+                    </div>
+                    <button onclick="prosesCekKelulusan()" class="w-full py-4 bg-lilac hover:bg-lilac-dark text-white rounded-2xl font-bold text-base tracking-wide transition-all duration-300 shadow-lg shadow-lilac/20 flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-magnifying-glass"></i> CEK STATUS KELULUSAN
+                    </button>
+                </div>
+
+                <!-- INFO PESAN ERROR / TIDAK DITEMUKAN (no-print) -->
+                <div id="error-box" class="hidden mt-6 bg-red-50 border border-red-200 text-red-800 p-4 rounded-xl flex items-start gap-3 animate-pulse no-print">
+                    <i class="fa-solid fa-circle-xmark text-lg mt-0.5"></i>
+                    <div>
+                        <h5 class="font-bold">Kesalahan Pencarian</h5>
+                        <p id="error-message" class="text-xs mt-1">Siswa dengan NISN tersebut tidak terdaftar di database kami.</p>
+                    </div>
+                </div>
+
+                <!-- WRAPPER CETAK RESMI (Berfungsi sebagai SKL - TEMA LILAC & PINK) -->
+                <div id="result-box" class="hidden mt-8 border-2 border-dashed border-lilac/40 rounded-3xl p-6 md:p-8 bg-gradient-to-br from-pink-light/30 to-lilac-light/30 relative overflow-hidden shadow-inner">
+                    <div id="print-area-wrapper" class="p-2">
+                        <!-- Kop Surat Resmi (Hanya muncul saat cetak / format SKL) -->
+                        <div class="border-b-4 border-double border-lilac-dark pb-4 mb-6 flex items-center gap-4 print-border-black">
+                            <!-- Logo Kop Resmi Baru -->
+                            <div class="border border-lilac-dark p-1.5 rounded-md print-border-black">
+                                <svg class="w-12 h-12 text-lilac-dark print-text-dark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                                    <path d="M12 17c-1.2-1-2.5-1.5-4-1.5S5.2 16 4 17V10c1.2-1 2.5-1.5 4-1.5s2.8.5 4 1.5" />
+                                    <path d="M12 17c1.2-1 2.5-1.5 4-1.5s2.8.5 4 1.5V10c-1.2-1-2.5-1.5-4-1.5s-2.8.5-4 1.5" />
+                                    <line x1="12" y1="8.5" x2="12" y2="17" />
+                                    <path d="M12 4l.8 1.6 1.8.2-1.3 1.2.3 1.8-1.6-.9-1.6.9.3-1.8-1.3-1.2 1.8-.2.8-1.6z" fill="currentColor" stroke="none" />
+                                </svg>
+                            </div>
+                            <div class="flex-grow text-center print-text-dark">
+                                <h3 class="font-bold text-xs tracking-widest uppercase text-lilac-dark print-text-dark">YAYASAN GLOBAL INSANI GENERASI EMAS</h3>
+                                <h2 class="font-extrabold text-sm md:text-base uppercase text-slate-800 print-text-dark">SMK GLOBAL INSANI JAKARTA</h2>
+                                <p class="text-[9px] font-medium text-slate-500 print-text-dark">Jl. Pendidikan No. 45, Kecamatan Global, Kota Insani | Telp: (021) 8899-7766</p>
+                                <p class="text-[9px] font-medium text-slate-500 print-text-dark">Website: www.smkglobalinsani.sch.id | Email: info@smkglobalinsani.sch.id</p>
+                            </div>
+                        </div>
+
+                        <!-- Label Dokumen -->
+                        <div class="text-center mb-6">
+                            <h4 class="font-bold text-sm tracking-wider uppercase underline text-lilac-dark print-text-dark">SURAT KETERANGAN LULUS SEMENTARA</h4>
+                            <p class="text-[10px] text-pink-dark print-text-dark font-semibold mt-1">Nomor: 421.5/SKL-GI/V/2026</p>
+                        </div>
+
+                        <p class="text-xs text-slate-700 print-text-dark mb-4 text-justify leading-relaxed">
+                            Kepala Sekolah Menengah Kejuruan (SMK) Global Insani selaku panitia penilai kelulusan sekolah dengan ini menerangkan secara resmi bahwa siswa tersebut di bawah ini:
+                        </p>
+
+                        <!-- Tabel Biodata Siswa (Hint Lilac & Pink) -->
+                        <div class="bg-white/90 backdrop-blur-sm p-4 rounded-xl border border-lilac/20 print-card mb-6 shadow-sm">
+                            <table class="w-full text-xs md:text-sm text-left border-collapse">
+                                <tbody>
+                                    <tr class="border-b border-lilac-light/60 print-border-black">
+                                        <th class="py-2.5 font-semibold text-lilac-dark w-1/3 print-text-dark">Nama Siswa</th>
+                                        <td class="py-2.5 font-bold text-slate-800 print-text-dark" id="res-nama">-</td>
+                                    </tr>
+                                    <tr class="border-b border-lilac-light/60 print-border-black">
+                                        <th class="py-2.5 font-semibold text-lilac-dark print-text-dark">NISN Siswa</th>
+                                        <td class="py-2.5 font-medium text-slate-800 tracking-wider print-text-dark" id="res-nisn">-</td>
+                                    </tr>
+                                    <tr class="border-b border-lilac-light/60 print-border-black">
+                                        <th class="py-2.5 font-semibold text-lilac-dark print-text-dark">Program Keahlian</th>
+                                        <td class="py-2.5 font-bold text-slate-800 print-text-dark" id="res-jurusan">-</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="py-2.5 font-semibold text-lilac-dark print-text-dark">Status Evaluasi</th>
+                                        <td class="py-2.5" id="res-status-cell">
+                                            <span id="res-status-label" class="px-3 py-1 rounded-full text-xs font-extrabold tracking-wider uppercase">LULUS</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Pesan Status & Instruksi -->
+                        <div id="status-desc-container" class="p-4 rounded-xl text-xs leading-relaxed mb-6">
+                            <p id="res-message" class="font-medium text-slate-700 print-text-dark"></p>
+                        </div>
+
+                        <!-- Tembusan & Tanda Tangan Cetak -->
+                        <div class="grid grid-cols-2 text-xs text-slate-600 print-text-dark">
+                            <div class="text-left mt-4">
+                                <p class="font-semibold underline text-lilac-dark print-text-dark">Tembusan Yth:</p>
+                                <ol class="list-decimal pl-4 mt-1 space-y-0.5 text-[11px]">
+                                    <li>Ketua Yayasan Global Insani</li>
+                                    <li>Wali Kelas</li>
+                                    <li>Arsip Kelulusan</li>
+                                </ol>
+                            </div>
+                            <div class="text-center sm:text-right mt-4 flex flex-col items-center sm:items-end">
+                                <div class="w-48 text-center">
+                                    <p class="text-[10px] text-slate-500 print-text-dark">Ditetapkan di Jakarta, 23 Mei 2026</p>
+                                    <p class="text-[10px] text-lilac-dark print-text-dark font-semibold">Kepala Sekolah,</p>
+                                    
+                                    <!-- Area TTD saat diprint -->
+                                    <div class="my-2 flex justify-center items-center h-12">
+                                        <svg class="w-24 h-10 text-lilac-dark print-text-dark" viewBox="0 0 100 50" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M10,35 C30,10 40,45 50,20 C60,5 70,30 90,25" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                    </div>
+                                    
+                                    <p class="font-bold text-slate-800 print-text-dark text-xs">Yusuf Mulana, S.Pd., M.Kom</p>
+                                    <p class="text-[10px] text-slate-500 print-text-dark">NIP. 19900214 201803 2 001</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tombol Aksi Hasil (No-Print) -->
+                    <div class="mt-8 pt-6 border-t border-lilac/20 flex flex-col sm:flex-row gap-3 no-print">
+                        <button id="btn-print" onclick="window.print()" class="px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold text-xs transition flex items-center justify-center gap-2 flex-1 shadow-md shadow-emerald-600/20">
+                            <i class="fa-solid fa-print text-sm"></i> CETAK SKL (PDF)
+                        </button>
+                        <button onclick="resetPencarian()" class="px-6 py-3 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-xl font-bold text-xs transition flex items-center justify-center gap-2 flex-1">
+                            <i class="fa-solid fa-arrow-rotate-left text-sm"></i> CEK SISWA LAIN
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER (No Print) -->
+    <footer class="bg-lilac-dark text-slate-300 py-6 border-t border-lilac/20 text-center text-xs tracking-wide no-print">
+        <div class="container mx-auto px-4 space-y-2">
+            <p class="text-slate-200">&copy; <span id="currentYear"></span> SMK Global Insani. Seluruh Hak Cipta Dilindungi Undang-Undang.</p>
+            <p class="text-slate-400">Dibuat dengan dedikasi penuh untuk mendukung digitalisasi kelulusan yang transparan dan akurat.</p>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // ================= DATABASE CSV (TEMPLATE LITERAL) =================
+        // Format Header: Nama,NISN,Jurusan,Status
+        // Database menggunakan nama-nama pilihan Anda, tambahan musisi, dan aktor Korea terkenal
+        const dataCSV = `Nama,NISN,Jurusan,Status
+Emma Watson,1234567890,RPL,LULUS
+Ryan Gosling,1234567891,DKV,LULUS
+Natalie Portman,1234567892,AKL,LULUS
+Anne Hathaway,1234567893,MPLB,LULUS
+Chad Michael Murray,1234567894,RPL,TIDAK LULUS
+Thomas Brodie Sangster,1234567895,DKV,LULUS
+Zendaya,1234567896,DKV,LULUS
+Tom Holland,1234567897,RPL,LULUS
+Selena Gomez,1234567898,AKL,LULUS
+Daniel Radcliffe,1234567899,MPLB,LULUS
+Taylor Swift,1234567900,DKV,LULUS
+Robert Downey Jr,1234567901,AKL,TIDAK LULUS
+Kim Soo-hyun,1234567902,RPL,LULUS
+Park Seo-joon,1234567903,DKV,LULUS
+Lee Min-ho,1234567904,AKL,LULUS
+Gong Yoo,1234567905,MPLB,LULUS
+Song Joong-ki,1234567906,RPL,LULUS
+Han So-hee,1234567907,DKV,TIDAK LULUS`;
+
+        // Parse Database CSV saat inisialisasi aplikasi
+        let databaseSiswa = [];
+
+        function parseDatabase() {
+            const baris = dataCSV.trim().split("\n");
+            const headers = baris[0].split(/[;,]/).map(h => h.trim().toLowerCase());
+            
+            databaseSiswa = baris.slice(1).map(b => {
+                const kolom = b.split(/[;,]/).map(k => k.trim());
+                const siswaObj = {};
+                headers.forEach((h, index) => {
+                    siswaObj[h] = kolom[index];
+                });
+                return siswaObj;
+            });
+        }
+
+        // ================= HITUNG MUNDUR (COUNTDOWN TIMER) =================
+        // Target: May 23, 2026 10:00:00
+        const targetDate = new Date("May 23, 2026 10:00:00").getTime();
+        let portalTerbuka = false;
+
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const difference = targetDate - now;
+
+            const daysElement = document.getElementById("days");
+            const hoursElement = document.getElementById("hours");
+            const minutesElement = document.getElementById("minutes");
+            const secondsElement = document.getElementById("seconds");
+            const btnPortal = document.getElementById("btn-portal");
+            const countdownContainer = document.getElementById("countdown-container");
+            const navCekBtn = document.getElementById("nav-cek-btn");
+            const btnLanjutCek = document.getElementById("btn-lanjut-cek");
+
+            if (difference <= 0) {
+                // Waktu Habis - Portal Terbuka
+                daysElement.innerHTML = "00";
+                hoursElement.innerHTML = "00";
+                minutesElement.innerHTML = "00";
+                secondsElement.innerHTML = "00";
+                
+                // Animasi menghilangkan kontainer hitung mundur
+                countdownContainer.classList.add("hidden");
+                
+                // Perbarui Tombol Utama dengan warna bertema Soft Pink & Lilac
+                btnPortal.disabled = false;
+                btnPortal.className = "px-8 py-4 rounded-xl font-bold text-sm tracking-wide transition-all duration-300 shadow-xl bg-gradient-to-r from-pink to-pink-dark hover:from-pink-light hover:to-pink text-lilac-dark transform hover:-translate-y-1 w-full sm:w-auto";
+                btnPortal.innerHTML = "MASUK KE HALAMAN PENGUMUMAN <i class='fa-solid fa-arrow-right ml-2'></i>";
+                btnPortal.onclick = () => navigateTo('sambutan');
+
+                // Aktifkan navigasi cek kelulusan
+                navCekBtn.disabled = false;
+                btnLanjutCek.disabled = false;
+                portalTerbuka = true;
+            } else {
+                // Hitung nilai waktu tersisa
+                const d = Math.floor(difference / (1000 * 60 * 60 * 24));
+                const h = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const m = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+                const s = Math.floor((difference % (1000 * 60)) / 1000);
+
+                daysElement.innerHTML = String(d).padStart(2, '0');
+                hoursElement.innerHTML = String(h).padStart(2, '0');
+                minutesElement.innerHTML = String(m).padStart(2, '0');
+                secondsElement.innerHTML = String(s).padStart(2, '0');
+
+                // Pastikan tombol terkunci
+                btnPortal.disabled = true;
+                btnPortal.className = "px-8 py-4 rounded-xl font-bold text-sm tracking-wide transition-all duration-300 shadow-xl bg-slate-700 text-slate-400 cursor-not-allowed w-full sm:w-auto";
+                btnPortal.innerText = "PENGUMUMAN BELUM DIBUKA";
+
+                navCekBtn.disabled = true;
+                btnLanjutCek.disabled = true;
+                portalTerbuka = false;
+            }
+        }
+
+        // ================= MULTI PAGE NAVIGATION (SPA) =================
+        const Pages = ['home', 'sambutan', 'cek'];
+
+        function navigateTo(targetPageId) {
+            // Mencegah bypass cek kelulusan lewat navigasi jika portal belum terbuka
+            if (targetPageId === 'cek' && !portalTerbuka) {
+                alert("Mohon maaf, portal pengumuman kelulusan belum dibuka.");
+                return;
+            }
+
+            Pages.forEach(pId => {
+                const pageEl = document.getElementById(`page-${pId}`);
+                const navEl = document.getElementById(`nav-${pId}`);
+                
+                if (pId === targetPageId) {
+                    pageEl.classList.remove('page-hidden');
+                    pageEl.classList.add('page-active');
+                    if (navEl) {
+                        navEl.classList.add('bg-lilac', 'text-white', 'font-bold');
+                    }
+                } else {
+                    pageEl.classList.add('page-hidden');
+                    pageEl.classList.remove('page-active');
+                    if (navEl) {
+                        navEl.classList.remove('bg-lilac', 'text-white', 'font-bold');
+                    }
+                }
+            });
+
+            // Scroll mulus ke atas saat beralih halaman
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+
+        // ================= LOGIKA PENCARIAN & EVALUASI =================
+        function prosesCekKelulusan() {
+            const inputVal = document.getElementById("nisn-input").value.trim();
+            const errorBox = document.getElementById("error-box");
+            const resultBox = document.getElementById("result-box");
+            const resNama = document.getElementById("res-nama");
+            const resNisn = document.getElementById("res-nisn");
+            const resJurusan = document.getElementById("res-jurusan");
+            const resStatusLabel = document.getElementById("res-status-label");
+            const resStatusCell = document.getElementById("res-status-cell");
+            const statusDescContainer = document.getElementById("status-desc-container");
+            const resMessage = document.getElementById("res-message");
+            const btnPrint = document.getElementById("btn-print");
+
+            // Sembunyikan output lama
+            errorBox.classList.add("hidden");
+            resultBox.classList.add("hidden");
+
+            // Validasi Input
+            if (inputVal === "") {
+                showError("Mohon masukkan NISN Anda terlebih dahulu!");
+                return;
+            }
+            if (isNaN(inputVal) || inputVal.length < 5) {
+                showError("NISN harus berupa angka valid (minimal 5 digit)!");
+                return;
+            }
+
+            // Cari di database lokal
+            const siswa = databaseSiswa.find(s => s.nisn === inputVal);
+
+            if (siswa) {
+                // Set data dasar biodata
+                resNama.innerText = siswa.nama.toUpperCase();
+                resNisn.innerText = siswa.nisn;
+                resJurusan.innerText = dapatkanNamaPanjangJurusan(siswa.jurusan);
+
+                const statusUpper = siswa.status.toUpperCase();
+
+                if (statusUpper === "LULUS") {
+                    // Penampilan Status LULUS (Hijau Soft)
+                    resStatusLabel.innerText = "LULUS";
+                    resStatusLabel.className = "px-3 py-1.5 rounded-full text-xs font-extrabold tracking-wider uppercase bg-emerald-100 text-emerald-800 border border-emerald-300";
+                    
+                    statusDescContainer.className = "p-5 rounded-xl text-xs leading-relaxed mb-6 bg-emerald-50 text-emerald-800 border border-emerald-200";
+                    resMessage.innerHTML = `<i class="fa-solid fa-circle-check text-lg mr-2 align-middle"></i> <strong>Selamat atas keberhasilan Anda!</strong> Berdasarkan hasil evaluasi, Anda dinyatakan memenuhi seluruh kriteria kelulusan SMK Global Insani. Silakan cetak dokumen Surat Keterangan Lulus (SKL) Sementara ini sebagai bukti resmi pendaftaran ke jenjang pendidikan selanjutnya atau dokumen verifikasi dunia kerja.`;
+                    
+                    btnPrint.style.display = "inline-flex"; // Tampilkan tombol cetak jika lulus
+                } else {
+                    // Penampilan Status TIDAK LULUS (Merah Soft)
+                    resStatusLabel.innerText = "TIDAK LULUS";
+                    resStatusLabel.className = "px-3 py-1.5 rounded-full text-xs font-extrabold tracking-wider uppercase bg-rose-100 text-rose-800 border border-rose-300";
+                    
+                    statusDescContainer.className = "p-5 rounded-xl text-xs leading-relaxed mb-6 bg-rose-50 text-rose-800 border border-rose-200";
+                    resMessage.innerHTML = `<i class="fa-solid fa-circle-exclamation text-lg mr-2 align-middle"></i> <strong>Tetap Semangat & Jangan Putus Asa.</strong> Perjalanan perjuangan Anda masih panjang. Hasil akhir ini adalah kesempatan berharga untuk mengevaluasi diri, meraih pembelajaran lebih dalam, dan bangkit kembali dengan semangat baru di masa depan. Anda dapat berkonsultasi langsung dengan wali kelas atau guru bimbingan konseling di sekolah.`;
+                    
+                    btnPrint.style.display = "none"; // Sembunyikan tombol cetak jika tidak lulus
+                }
+
+                // Tampilkan Kotak Hasil
+                resultBox.classList.remove("hidden");
+                // Scroll agar hasil langsung terlihat dengan nyaman
+                resultBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+            } else {
+                showError("Maaf, NISN tidak terdaftar di sistem. Periksa kembali nomor yang Anda masukkan atau hubungi Admin sekolah.");
+            }
+        }
+
+        function dapatkanNamaPanjangJurusan(singkatan) {
+            const listJurusan = {
+                'AKL': 'Akuntansi dan Keuangan Lembaga',
+                'MPLB': 'Manajemen Perkantoran dan Layanan Bisnis',
+                'RPL': 'Rekayasa Perangkat Lunak',
+                'DKV': 'Desain Komunikasi Visual'
+            };
+            return listJurusan[singkatan.toUpperCase()] || singkatan;
+        }
+
+        function showError(msg) {
+            const errorBox = document.getElementById("error-box");
+            const errorMsg = document.getElementById("error-message");
+            errorMsg.innerText = msg;
+            errorBox.classList.remove("hidden");
+            errorBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        // Memulihkan input pencarian
+        function resetPencarian() {
+            document.getElementById("nisn-input").value = "";
+            document.getElementById("error-box").classList.add("hidden");
+            document.getElementById("result-box").classList.add("hidden");
+        }
+
+        // ================= LIFECYCLE INITIALIZATION =================
+        window.onload = function() {
+            // 1. Ambil Tahun Copyright Saat Ini secara Otomatis
+            document.getElementById("currentYear").innerText = new Date().getFullYear();
+
+            // 2. Parse Database CSV Literal
+            parseDatabase();
+
+            // 3. Jalankan Loop Hitung Mundur Realtime
+            updateCountdown();
+            setInterval(updateCountdown, 1000);
+
+            // 4. Daftarkan Event Listener tombol Enter untuk pencarian
+            document.getElementById("nisn-input").addEventListener("keypress", function(event) {
+                if (event.key === "Enter") {
+                    event.preventDefault();
+                    prosesCekKelulusan();
+                }
+            });
+        }
+    </script>
+</body>
+</html>
